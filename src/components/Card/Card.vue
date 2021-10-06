@@ -3,7 +3,7 @@
     <div class="card-inner" :class="{'flip': activeTab}">
         <div class="card-front">
             <img :src="character.image" alt="character_image">
-            <h2>{{ character.name }}</h2>
+            <h2>[ {{ character.name }} ]</h2>
 
         </div>
         <div class="card-back" >
@@ -84,7 +84,7 @@ export default {
 }
 .bg {
     position: absolute;
-    top: -30%;
+    top: -20%;
     left: -50%;
     min-width: 30rem;
     min-height: 30rem;

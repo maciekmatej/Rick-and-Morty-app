@@ -48,7 +48,7 @@ export default {
       window.scrollTo(0, 0)
     },
     getTop () {
-      if (document.documentElement.scrollTop > 500) {
+      if (document.documentElement.scrollTop > 100) {
         this.hidden = false
         return
       }
@@ -75,7 +75,6 @@ export default {
 </script>
 <style>
 .home {
-  background-color: rgb(243, 243, 243);
   min-width: 100%;
 }
 .sites-wrapper {
