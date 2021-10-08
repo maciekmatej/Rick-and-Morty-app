@@ -7,6 +7,9 @@
             :tab="tab"
             @show-tab="activeTab"
             />
+      <div class="empty-query" v-if="filteredData.length < 1">
+        no data matched
+      </div>
     </div>
   </div>
 </template>
@@ -41,6 +44,7 @@ export default {
 <style>
   .character-list {
   display: grid;
+  position: relative;
   width: 70vw;
   min-width: 320px;
   max-width: 1440px;
@@ -52,6 +56,17 @@ export default {
   border-radius: 20px;
   background: none;
   justify-content: center;
+}
+.empty-query {
+  position: absolute;
+  bottom: 25%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  font-size: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
 }
 @media screen and (max-width: 1159px) {
   .character-list {

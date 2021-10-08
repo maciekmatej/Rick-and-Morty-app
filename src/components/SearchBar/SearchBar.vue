@@ -1,8 +1,8 @@
 <template>
   <header class="search-bar">
     <div class="search-bar-container">
-      <div class="logo">
-        <img src="~@/assets/images/logo.png" alt="">
+      <div class="logo" @click="reload">
+          <img src="~@/assets/images/logo.png" alt="">
       </div>
 
       <section class="search-form">
@@ -89,6 +89,9 @@ export default {
         gender: []
       }
       this.$emit('filter-data', this.filters)
+    },
+    reload () {
+      window.location.reload()
     }
 
   },
@@ -177,6 +180,7 @@ export default {
 }
 .logo {
   height: 100%;
+  cursor: pointer;
 }
 .logo img {
   height: 6.5rem;
