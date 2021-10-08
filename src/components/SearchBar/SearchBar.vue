@@ -196,7 +196,7 @@ export default {
 }
 
 .show {
-  display: none;
+  visibility: hidden;
   opacity: 0;
 }
 .filters-wrapper {
