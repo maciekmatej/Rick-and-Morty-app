@@ -4,8 +4,15 @@ html {
 }
 body {
     margin: 0;
+    
+}
+body, button, input, label {
+    font-family: 'Space Mono', monospace;
 }
 .hidden {
     
     opacity: 0;
+}
+img,h2, .card-front, .card-back {
+    pointer-events: none;
 }

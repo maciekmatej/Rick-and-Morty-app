@@ -1,20 +1,21 @@
 <template>
-<div @click="showInfo" class="card-wrapper">
-    <div class="card-inner" :class="{'flip': activeTab}">
+  <div  class="card-wrapper" @click="showInfo">
+    <div class="card-inner" :class="{'flip': tab == character.id}">
         <div class="card-front">
             <img :src="character.image" alt="character_image">
-            <h2>[ {{ character.name }} ]</h2>
+            <h2>[{{ character.name }}]</h2>
 
         </div>
         <div class="card-back" >
-          <div class="bg" :class="{'rotate': activeTab}">
+          <div class="bg"
+              :class="{'rotate': tab == character.id}">
           </div>
           <div class="card-info">
-            <span>Gender: {{ character.gender }}</span>
-            <span>Status: {{ character.status }}</span>
-            <span>Species: {{ character.species }}</span>
-            <span>Type: {{ character.type }}</span>
-            <span>Created: {{ character.created }}</span>
+            <span>GENDER: {{ character.gender }}</span>
+            <span>STATUS: {{ character.status }}</span>
+            <span>SPECIES: {{ character.species }}</span>
+            <span>TYPE: {{ character.type }}</span>
+            <span>CREATED: {{ formatedDate }}</span>
 
             </div>
         </div>
@@ -23,19 +24,36 @@
 </template>
 
 <script>
+// @click="showInfo"  <= this was used to flip clicked card but I chose a function with classes in the end.
 export default {
   data () {
     return {
-      activeTab: false
+
     }
   },
   name: 'Card',
-  props: ['character'],
+  props: ['character', 'tab'],
+  emits: ['show-tab'],
   methods: {
     showInfo () {
-      this.activeTab = !this.activeTab
+      if (this.tab === this.character.id) {
+        this.$emit('show-tab', 0)
+      } else {
+        this.$emit('show-tab', this.character.id)
+      }
+    }
+  },
+  computed: {
+    formatedDate () {
+      const dateParts = this.character.created.split('-')
+      const dayPart = dateParts[2].split('T')
+      const day = dayPart[0]
+      const month = dateParts[1]
+      const year = dateParts[0]
+      return `${day}-${month}-${year}`
     }
   }
+
 }
 
 </script>
@@ -48,13 +66,14 @@ export default {
     width: 100%;
     height: 100%;
     transform-style: preserve-3d;
-    box-shadow: 0 0 10px rgb(145, 145, 145);
+    box-shadow: 0 0 15px #5cad4a;
     border-radius: 20px;
 }
 .card-wrapper {
     width: 100%;
     height: 100%;
     perspective: 800px;
+    cursor: pointer;
 
 }
 .card-front {
@@ -68,7 +87,8 @@ export default {
     display: flex;
     flex-direction: column;
     border-radius: 20px;
-    background-color: white;
+    background-color: #5cad4a;
+    color: white;
 
 }
 .card-back {
@@ -76,23 +96,29 @@ export default {
     top: 0;
     transform: rotateY(180deg);
     background-color: rgba(0, 128, 128, 0.274);
-    width: 100%;
-    height: 100%;
     justify-content: space-around;
     overflow: hidden;
 
 }
 .bg {
     position: absolute;
-    top: -20%;
-    left: -50%;
-    min-width: 30rem;
-    min-height: 30rem;
-    background-image: url(~@/assets/images/portal.png);
+    top: -10%;
+    left: -35%;
+    min-width: 26rem;
+    min-height: 26rem;
+    background-image: url(~@/assets/images/portal1.png);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: 50% 50%;
 
+}
+.card-front h2 {
+  min-height: 3.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  font-weight: 700;
 }
 .card-info {
   z-index: 5;
@@ -100,15 +126,15 @@ export default {
   flex-direction: column;
   height: 100%;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
   font-size: 1rem;
-  font-weight: 700;
-  color: black;
+  font-weight: 400;
+
 }
 .card-info span {
-  background-color: white;
+  background:none;
   padding: 5px;
-  border-radius: 5px;
+  border-radius: 3px;
 }
 
 .flip {

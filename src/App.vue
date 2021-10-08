@@ -10,11 +10,12 @@ export default {
 </script>
 <style>
 #app {
-  font-family : Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   background-color: rgb(0, 0, 0);
-  min-width: 320px ;
+  background-image: url(~@/assets/images/bg.png);
+  min-width: 320px;
+  min-height: 100vh;
 }
 </style>

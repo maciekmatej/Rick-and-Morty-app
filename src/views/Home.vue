@@ -1,11 +1,13 @@
 <template>
   <div class="home">
-    <search-bar @new-query="getData"/>
-    <CharacterList :characters="characters"/>
+    <search-bar :characters="characters" @new-query="getData" @filter-data="getQueryData"/>
+    <CharacterList :characters="characters" :filteredData="filteredData"/>
     <div class="sites-wrapper">
-    <button v-if="characters.info.prev" @click="loadPrev"><i class="far fa-arrow-alt-circle-left"></i></button>
-      <div class="site-number">{{ currentSite }} of {{ characters.info.pages }}</div>
-    <button v-if="characters.info.next" @click="loadNext"><i class="far fa-arrow-alt-circle-right"></i></button>
+      <button v-if="characters.info.prev" @click="loadPrev"><i class="far fa-arrow-alt-circle-left"></i></button>
+        <div class="site-number">
+          {{ currentSite }} of {{ characters.info.pages }}
+        </div>
+      <button v-if="characters.info.next" @click="loadNext"><i class="far fa-arrow-alt-circle-right"></i></button>
     </div>
     <a id="scroll-top" :class="{'hidden': hidden}" href="#"><i class="fas fa-angle-double-left"></i></a>
   </div>
@@ -21,7 +23,12 @@ export default {
     return {
       characters: {},
       currentSite: 1,
-      hidden: true
+      hidden: true,
+      filters: {
+        status: '',
+        species: '',
+        gender: []
+      }
     }
   },
   components: {
@@ -30,8 +37,14 @@ export default {
   },
   methods: {
     async getData (data) {
+      console.log('fired')
       this.characters = data
       this.currentSite = 1
+    },
+    async getQueryData (data) {
+      this.filters.status = data.status
+      this.filters.species = data.species
+      this.filters.gender = data.gender
     },
     async loadNext () {
       const req = await fetch(`${this.characters.info.next}`)
@@ -57,7 +70,26 @@ export default {
 
   },
   computed: {
+    filteredData () { // here are all the queries that can be inputed by user
+      const res = this.characters.results
+      return res.filter((character) => {
+        const status = character.status
+        const species = character.species
+        const gender = character.gender
 
+        const statusQ = this.filters.status
+        const speciesQ = this.filters.species
+        const genderQ = this.filters.gender
+        const result = () => { // searching for characters that have at least one element from gender query
+          if (genderQ.length < 1) {
+            return true
+          }
+          return genderQ.some((item) => item === gender)
+        }
+
+        return status.includes(statusQ) && species.includes(speciesQ) && result()
+      })
+    }
   },
   async created () {
     const req = await fetch('https://rickandmortyapi.com/api/character')
@@ -81,16 +113,17 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 2rem;
-  padding-bottom: 1rem;
+  margin-top: 3.5rem;
+  padding-bottom: 3.5rem;
   font-size: 1.5rem;
+  color: rgb(156, 192, 156);
 }
 .sites-wrapper button {
   font-size: 2.5rem;
   border: none;
   background: none;
   cursor: pointer;
-  color: #46383f;
+  color: #d8ced3;
   margin: 0 0.5rem;
 
 }
@@ -104,14 +137,14 @@ export default {
     right: 1rem;
     z-index: 100;
     color: white;
-    font-size: 3rem;
+    font-size: 2.5rem;
     border-radius: 10px;
-    box-shadow: 0 0 2px hsl(72, 5%, 20%);
+    box-shadow: 0 0 3px hsl(180, 4%, 36%);
 
     transition: opacity 0.5s ease-out, box-shadow 0.2s ease-out;
 }
 #scroll-top:hover {
-  box-shadow: 0 0 10px hsl(75, 2%, 36%);
+  box-shadow: 0 0 15px hsl(177, 37%, 65%);
 }
 #scroll-top i {
   transform: rotateZ(90deg);
