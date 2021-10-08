@@ -1,15 +1,25 @@
 <template>
   <div class="home">
-    <search-bar :characters="characters" @new-query="getData" @filter-data="getQueryData"/>
-    <CharacterList :characters="characters" :filteredData="filteredData"/>
+    <SearchBar
+      :characters="characters"
+      @new-query="getData"
+      @filter-data="getQueryData"
+    />
+    <CharacterList :characters="characters" :filteredData="filteredData" />
     <div class="sites-wrapper">
-      <button v-if="characters.info.prev" @click="loadPrev"><i class="far fa-arrow-alt-circle-left"></i></button>
-        <div class="site-number">
-          {{ currentSite }} of {{ characters.info.pages }}
-        </div>
-      <button v-if="characters.info.next" @click="loadNext"><i class="far fa-arrow-alt-circle-right"></i></button>
+      <button v-if="characters.info.prev" @click="loadPrev">
+        <i class="far fa-arrow-alt-circle-left"></i>
+      </button>
+      <div class="site-number" v-if="characters.results.length > 0">
+        {{ currentSite }} of {{ characters.info.pages }}
+      </div>
+      <button v-if="characters.info.next" @click="loadNext">
+        <i class="far fa-arrow-alt-circle-right"></i>
+      </button>
     </div>
-    <a id="scroll-top" :class="{'hidden': hidden}" href="#"><i class="fas fa-angle-double-left"></i></a>
+    <a id="scroll-top" :class="{ hidden: hidden }" href="#">
+      <i class="fas fa-angle-double-left"></i>
+    </a>
   </div>
 </template>
 
@@ -37,7 +47,11 @@ export default {
   },
   methods: {
     async getData (data) {
-      console.log('fired')
+      if (data.error) {
+        this.characters.info = []
+        this.characters.results = []
+        return
+      }
       this.characters = data
       this.currentSite = 1
     },
@@ -67,11 +81,14 @@ export default {
       }
       this.hidden = true
     }
-
   },
   computed: {
-    filteredData () { // here are all the queries that can be inputed by user
+    filteredData () {
+      // here are all the queries that can be inputed by user
       const res = this.characters.results
+      if (!this.characters.results) {
+        return []
+      }
       return res.filter((character) => {
         const status = character.status
         const species = character.species
@@ -80,14 +97,17 @@ export default {
         const statusQ = this.filters.status
         const speciesQ = this.filters.species
         const genderQ = this.filters.gender
-        const result = () => { // searching for characters that have at least one element from gender query
+        const result = () => {
+          // searching for characters that have at least one element from gender query
           if (genderQ.length < 1) {
             return true
           }
           return genderQ.some((item) => item === gender)
         }
 
-        return status.includes(statusQ) && species.includes(speciesQ) && result()
+        return (
+          status.includes(statusQ) && species.includes(speciesQ) && result()
+        )
       })
     }
   },
@@ -102,7 +122,6 @@ export default {
   beforeUnmount () {
     window.removeEventListener('scroll', this.getTop)
   }
-
 }
 </script>
 <style>
@@ -125,23 +144,21 @@ export default {
   cursor: pointer;
   color: #d8ced3;
   margin: 0 0.5rem;
-
 }
 #scroll-top {
-
   width: 60px;
-    height: 60px;
-    background-color: #36352a;
-    position: fixed;
-    bottom: 1rem;
-    right: 1rem;
-    z-index: 100;
-    color: white;
-    font-size: 2.5rem;
-    border-radius: 10px;
-    box-shadow: 0 0 3px hsl(180, 4%, 36%);
+  height: 60px;
+  background-color: #36352a;
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 100;
+  color: white;
+  font-size: 2.5rem;
+  border-radius: 10px;
+  box-shadow: 0 0 3px hsl(180, 4%, 36%);
 
-    transition: opacity 0.5s ease-out, box-shadow 0.2s ease-out;
+  transition: opacity 0.5s ease-out, box-shadow 0.2s ease-out;
 }
 #scroll-top:hover {
   box-shadow: 0 0 15px hsl(177, 37%, 65%);
@@ -149,6 +166,5 @@ export default {
 #scroll-top i {
   transform: rotateZ(90deg);
   line-height: 60px;
-
-  }
+}
 </style>

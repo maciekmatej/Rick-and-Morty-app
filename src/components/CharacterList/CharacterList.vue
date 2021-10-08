@@ -1,12 +1,13 @@
 <template>
-  <div >
-    <div class="character-list" >
-      <Card v-for="character in filteredData"
-            :key="character.id"
-            :character="character"
-            :tab="tab"
-            @show-tab="activeTab"
-            />
+  <div>
+    <div class="character-list">
+      <Card
+        v-for="character in filteredData"
+        :key="character.id"
+        :character="character"
+        :tab="tab"
+        @show-tab="activeTab"
+      />
       <div class="empty-query" v-if="filteredData.length < 1">
         no data matched
       </div>
@@ -42,14 +43,14 @@ export default {
 </script>
 
 <style>
-  .character-list {
+.character-list {
   display: grid;
   position: relative;
   width: 70vw;
   min-width: 320px;
   max-width: 1440px;
   margin: 0 auto;
-  padding-top: 15rem ;
+  padding-top: 15rem;
   grid-gap: 30px;
   grid-template-columns: repeat(auto-fill, minmax(250px, 250px));
   grid-template-rows: repeat(auto-fill, minmax(250px, 1fr));
@@ -61,7 +62,7 @@ export default {
   position: absolute;
   bottom: 25%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   font-size: 2rem;
   display: flex;
   justify-content: center;

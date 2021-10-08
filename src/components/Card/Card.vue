@@ -1,24 +1,20 @@
 <template>
-  <div  class="card-wrapper" @click="showInfo">
-    <div class="card-inner" :class="{'flip': tab == character.id}">
-        <div class="card-front">
-            <img :src="character.image" alt="character_image">
-            <h2>[{{ character.name }}]</h2>
-
+  <div class="card-wrapper" @click="showInfo">
+    <div class="card-inner" :class="{ flip: tab == character.id }">
+      <div class="card-front">
+        <img :src="character.image" alt="character_image" />
+        <h2>[{{ character.name }}]</h2>
+      </div>
+      <div class="card-back">
+        <div class="bg" :class="{ rotate: tab == character.id }"></div>
+        <div class="card-info">
+          <span>GENDER: {{ character.gender }}</span>
+          <span>STATUS: {{ character.status }}</span>
+          <span>SPECIES: {{ character.species }}</span>
+          <span>TYPE: {{ character.type }}</span>
+          <span>CREATED: {{ formatedDate }}</span>
         </div>
-        <div class="card-back" >
-          <div class="bg"
-              :class="{'rotate': tab == character.id}">
-          </div>
-          <div class="card-info">
-            <span>GENDER: {{ character.gender }}</span>
-            <span>STATUS: {{ character.status }}</span>
-            <span>SPECIES: {{ character.species }}</span>
-            <span>TYPE: {{ character.type }}</span>
-            <span>CREATED: {{ formatedDate }}</span>
-
-            </div>
-        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -27,9 +23,7 @@
 // @click="showInfo"  <= this was used to flip clicked card but I chose a function with classes in the end.
 export default {
   data () {
-    return {
-
-    }
+    return {}
   },
   name: 'Card',
   props: ['character', 'tab'],
@@ -53,64 +47,57 @@ export default {
       return `${day}-${month}-${year}`
     }
   }
-
 }
-
 </script>
 
 <style>
-
 .card-inner {
-    position: relative;
-    transition: transform 0.5s;
-    width: 100%;
-    height: 100%;
-    transform-style: preserve-3d;
-    box-shadow: 0 0 15px #5cad4a;
-    border-radius: 20px;
+  position: relative;
+  transition: transform 0.5s;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  box-shadow: 0 0 15px #5cad4a;
+  border-radius: 20px;
 }
 .card-wrapper {
-    width: 100%;
-    height: 100%;
-    perspective: 800px;
-    cursor: pointer;
-
+  width: 100%;
+  height: 100%;
+  perspective: 800px;
+  cursor: pointer;
 }
 .card-front {
   position: relative;
 }
-.card-front, .card-back {
-
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    display: flex;
-    flex-direction: column;
-    border-radius: 20px;
-    background-color: #5cad4a;
-    color: white;
-
+.card-front,
+.card-back {
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  background-color: #5cad4a;
+  color: white;
 }
 .card-back {
-    position: absolute;
-    top: 0;
-    transform: rotateY(180deg);
-    background-color: rgba(0, 128, 128, 0.274);
-    justify-content: space-around;
-    overflow: hidden;
-
+  position: absolute;
+  top: 0;
+  transform: rotateY(180deg);
+  background-color: rgba(0, 128, 128, 0.274);
+  justify-content: space-around;
+  overflow: hidden;
 }
 .bg {
-    position: absolute;
-    top: -10%;
-    left: -35%;
-    min-width: 26rem;
-    min-height: 26rem;
-    background-image: url(~@/assets/images/portal1.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: 50% 50%;
-
+  position: absolute;
+  top: -10%;
+  left: -35%;
+  min-width: 26rem;
+  min-height: 26rem;
+  background-image: url(~@/assets/images/portal1.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 50%;
 }
 .card-front h2 {
   min-height: 3.5rem;
@@ -129,10 +116,9 @@ export default {
   justify-content: center;
   font-size: 1rem;
   font-weight: 400;
-
 }
 .card-info span {
-  background:none;
+  background: none;
   padding: 5px;
   border-radius: 3px;
 }
@@ -141,7 +127,7 @@ export default {
   transform: rotateY(180deg);
 }
 .rotate {
-   animation: 30s spin infinite linear;
+  animation: 30s spin infinite linear;
 }
 
 .card-front img {
@@ -150,7 +136,7 @@ export default {
   -webkit-user-drag: none;
 }
 .card span {
-    display: block;
+  display: block;
 }
 @keyframes spin {
   from {
@@ -161,5 +147,4 @@ export default {
     transform: rotateZ(360deg);
   }
 }
-
 </style>
